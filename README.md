@@ -1,5 +1,5 @@
 
-    For getting URLs shorter we can use bijective function which map id of source URL element to symbols from some alphabet,
+For getting URLs shorter we can use bijective function which map id of source URL element to symbols from some alphabet,
 for instance we can choose alphabet as [a-zA-Z0-9]. To do generation process in parallel we can use some pool of JVMs
 as generator nodes. Our ids can be limited for first time for example with Long.MAX_VALUE, so we can split this range
 to the number of nodes (or to fixed ranges with possibility to add nodes), so each node will use unuqie subrange of
