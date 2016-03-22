@@ -1,0 +1,26 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false" monitoring="autodetect" dynamicConfig="true" name="shortener-config">
+
+    <diskStore path="java.io.tmpdir/shortener-ehcache"/>
+
+    <defaultCache
+            maxElementsInMemory="100"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="false"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="source"
+           maxElementsInMemory="10000"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"/>
+
+    <cache name="shorted"
+           maxElementsInMemory="10000"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"/>
+
+</ehcache>

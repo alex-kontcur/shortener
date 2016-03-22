@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="locations">
+            <list>
+                <value>classpath*:/*.conf</value>
+                <value>classpath*:/*.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Infrastructure -->
+
+    <import resource="classpath*:META-INF/spring/infrastructure/async-support.xml"/>
+    <import resource="classpath*:META-INF/spring/infrastructure/jpa.xml"/>
+
+    <!-- Domain Infrastructure -->
+
+    <import resource="classpath*:META-INF/spring/infrastructure/caches.xml"/>
+    <import resource="classpath*:META-INF/spring/infrastructure/validation.xml"/>
+
+    <context:component-scan base-package="ru.bona.shortener"/>
+
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="defaultContentType" value="application/json"/>
+        <property name="ignoreAcceptHeader" value="true"/>
+    </bean>
+
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
+        <mvc:async-support default-timeout="10000" task-executor="shortenerServerExecutor"/>
+    </mvc:annotation-driven>
+
+    <import resource="classpath*:META-INF/spring/infrastructure/repository-jpa.xml"/>
+
+</beans>

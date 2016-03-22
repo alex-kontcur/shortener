@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="springHandlerFactory" class="ru.bona.shortener.spring.SpringHandlerFactory"/>
+
+    <bean id="monitorableHandler" factory-bean="springHandlerFactory" factory-method="createSpringMVCHandler">
+        <constructor-arg index="0" value="classpath*:/META-INF/spring/web-services.xml"/>
+        <constructor-arg index="1" value="/*"/>
+    </bean>
+
+    <bean id="webServer" class="org.eclipse.jetty.server.Server" init-method="start" destroy-method="stop"
+          lazy-init="false">
+        <property name="connectors">
+            <set>
+                <ref bean="jettyConnector"/>
+            </set>
+        </property>
+        <property name="handler">
+            <bean class="org.eclipse.jetty.server.handler.HandlerCollection">
+                <property name="handlers">
+                    <array>
+                        <ref bean="monitorableHandler"/>
+                    </array>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="jettyConnector" class="org.eclipse.jetty.server.nio.SelectChannelConnector">
+        <property name="host" value="${jetty.host}"/>
+        <property name="port" value="${jetty.port}"/>
+        <!-- Turn off connection statistics -->
+        <property name="statsOn" value="${jetty.stats-on:false}"/>
+        <!-- Don't resolve ip addresses to names -->
+        <property name="resolveNames" value="${jetty.resolve-names:false}"/>
+
+        <!-- Size of the connection accept queue, must be same as kern.ipc.somaxconn kernel parameter. -->
+        <property name="acceptQueueSize" value="${jetty.accept-queue-size:256}"/>
+        <!-- Maximum Idle time for a connection -->
+        <property name="maxIdleTime" value="${jetty.max-idle-time:2000000000}"/>
+        <!-- Set the number of connections, which if exceeded places this connector in a low resources state -->
+        <property name="lowResourcesConnections" value="${jetty.low-resources-connections:2000000000}"/>
+        <!-- Maximum Idle time for a connection, when connector is in low resources state.-->
+        <property name="lowResourcesMaxIdleTime" value="${jetty.low-resources-max-idle-time:2000000000}"/>
+        <property name="threadPool">
+            <bean class="org.eclipse.jetty.util.thread.QueuedThreadPool">
+                <property name="name" value="GSJTP"/>
+                <property name="minThreads" value="${jetty.min-threads:30}"/>
+                <property name="maxThreads" value="${jetty.max-threads:500}"/>
+            </bean>
+        </property>
+    </bean>
+
+</beans>

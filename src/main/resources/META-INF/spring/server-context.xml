@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="locations">
+            <list>
+                <value>classpath*:/*.conf</value>
+                <value>classpath*:/*.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <import resource="classpath*:META-INF/spring/infrastructure/async-support.xml"/>
+    <import resource="classpath*:META-INF/spring/infrastructure/jpa.xml"/>
+    <import resource="classpath*:META-INF/spring/infrastructure/web-server.xml"/>
+    <import resource="classpath*:META-INF/spring/infrastructure/caches.xml"/>
+    <import resource="classpath*:META-INF/spring/infrastructure/validation.xml"/>
+    <import resource="classpath*:META-INF/spring/infrastructure/repository-jpa.xml"/>
+
+</beans>

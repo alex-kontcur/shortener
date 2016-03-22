@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+                 version="2.0">
+
+    <entity class="ru.bona.shortener.domain.model.URLEntry" access="FIELD">
+        <description>Represents URLEntry detailed info</description>
+        <table name="URL_ENTRY"/>
+        <attributes>
+            <id name="id">
+                <column name="U_ID"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+
+            <basic name="sourceURL">
+                <column name="SOURCE_URL" nullable="false"/>
+            </basic>
+
+            <basic name="shortedURL">
+                <column name="SHORTED_URL" nullable="true"/>
+            </basic>
+        </attributes>
+    </entity>
+
+</entity-mappings>
